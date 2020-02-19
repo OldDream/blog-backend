@@ -5,7 +5,9 @@ const Controller = require('egg').Controller;
 class AdminController extends Controller {
   async index() {
     const { ctx } = this;
-    ctx.body = 'this is API for admin pages';
+    let DBresult = await this.app.mysql.get("blog_content", {})
+    // console.log(DBresult)
+    ctx.body = DBresult
   }
 }
 
