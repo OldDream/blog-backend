@@ -32,8 +32,9 @@ class ClientController extends Controller {
     type.typeName as typeName FROM article LEFT JOIN type ON article.type_id = type.id WHERE article.id=${id}`
     
       const result = await this.app.mysql.query(sql)
+      console.log(result[0])
       ctx.body = {
-        data: result
+        data: result[0]
       }
   }
 }
