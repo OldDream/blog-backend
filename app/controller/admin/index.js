@@ -3,14 +3,9 @@
 const Controller = require('egg').Controller;
 
 class AdminController extends Controller {
-  async index() {
-    const { ctx } = this;
-    // let DBresult = await this.app.mysql.get("blog_content", {})
-    // console.log(DBresult)
-    ctx.body = 'blog admin api'
-  }
 
   async getArticleList() {
+    const { ctx } = this;
     const sql = `SELECT article.id as id,
       article.title as title,
       article.introduction as introduction,
@@ -19,7 +14,7 @@ class AdminController extends Controller {
       type.typeName as typeName FROM article LEFT JOIN type ON article.type_id = type.id`
     
       const result = await this.app.mysql.query(sql)
-      this.ctx.body = {
+      ctx.body = {
         data: result
       }
   }
