@@ -4,6 +4,7 @@ const Controller = require('egg').Controller;
 
 class ClientController extends Controller {
 
+  // 获取全部文章
   async getArticleList() {
     const { ctx } = this;
     const sql = `SELECT article.id as id,
@@ -12,17 +13,34 @@ class ClientController extends Controller {
       FROM_UNIXTIME(article.created_time,'%Y-%m-%d %H:%i:%s') as created_time,
       article.view_count as view_count,
       type.typeName as typeName FROM article LEFT JOIN type ON article.type_id = type.id`
-    
-      const result = await this.app.mysql.query(sql)
-      ctx.body = {
-        data: result
-      }
+
+    const result = await this.app.mysql.query(sql)
+    ctx.body = {
+      data: result
+    }
+  }
+
+  // 根据typeId获取对应类别的文章
+  async getArticleListById () {
+    const { ctx } = this;
+    const typeId = ctx.query.typeId
+    console.log('typeid:' + typeId)
+    const sql = `SELECT article.id as id,
+    article.title as title,
+    article.content as content,
+    FROM_UNIXTIME(article.created_time,'%Y-%m-%d %H:%i:%s') as created_time,
+    article.view_count as view_count,
+    type.typeName as typeName FROM article LEFT JOIN type ON article.type_id = type.id WHERE article.type_id=${typeId}`
+
+    const result = await this.app.mysql.query(sql)
+    console.log(result)
+    ctx.body = {
+      data: result
+    }
   }
 
   async getArticleById() {
     const { ctx } = this;
-    console.log('6666>>>>>>>>>>>>>>>')
-    console.log(ctx.query.id)
     const id = ctx.query.id
     const sql = `SELECT article.id as id,
     article.title as title,
@@ -30,12 +48,20 @@ class ClientController extends Controller {
     FROM_UNIXTIME(article.created_time,'%Y-%m-%d %H:%i:%s') as created_time,
     article.view_count as view_count,
     type.typeName as typeName FROM article LEFT JOIN type ON article.type_id = type.id WHERE article.id=${id}`
-    
-      const result = await this.app.mysql.query(sql)
-      console.log(result[0])
-      ctx.body = {
-        data: result[0]
-      }
+
+    const result = await this.app.mysql.query(sql)
+    ctx.body = {
+      data: result[0]
+    }
+  }
+
+  // 获取全部文章类型
+  async getArticleType() {
+    const { ctx } = this;
+    const result = await this.app.mysql.select('type')
+    ctx.body = {
+      data: result
+    }
   }
 }
 
