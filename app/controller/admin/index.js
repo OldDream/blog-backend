@@ -4,22 +4,7 @@ const Controller = require('egg').Controller;
 
 class AdminController extends Controller {
 
-  async getArticleList() {
-    const { ctx } = this;
-    const sql = `SELECT article.id as id,
-      article.title as title,
-      article.introduction as introduction,
-      FROM_UNIXTIME(article.created_time,'%Y-%m-%d %H:%i:%s') as created_time,
-      article.view_count as view_count,
-      type.typeName as typeName FROM article LEFT JOIN type ON article.type_id = type.id`
-
-    const result = await this.app.mysql.query(sql)
-    ctx.body = {
-      data: result
-    }
-  }
-
-  async ckeckLogin() {
+  async checkLogin() {
     const { ctx } = this;
     console.log(ctx.request.body)
     let userName = ctx.request.body.userName, password = ctx.request.body.password;
@@ -29,14 +14,25 @@ class AdminController extends Controller {
       // 查到了，代表登陆成功
       let openId = new Date().getTime()
       ctx.session.openId = { openId }
-      ctx.body={
+      ctx.body = {
+        success: true,
         message: '登陆成功',
         openId
       }
     } else {
-      ctx.body={
+      ctx.body = {
+        success: false,
         message: '登陆失败'
       }
+    }
+  }
+
+  async getTypeInfo() {
+    const { ctx } = this;
+    const resType = await this.app.mysql.select('type')
+    ctx.body = {
+      success: true,
+      data: resType
     }
   }
 }
