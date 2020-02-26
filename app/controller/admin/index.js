@@ -20,6 +20,7 @@ class AdminController extends Controller {
         openId
       }
     } else {
+      ctx.session = null;
       ctx.body = {
         success: false,
         message: '登陆失败'
