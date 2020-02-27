@@ -38,7 +38,8 @@ class AdminController extends Controller {
     }
   }
 
-  // 保存文章（含草稿？）
+  // 保存文章（含草稿）
+  // 草稿待实现
   async addOrEditArticle() {
     const { ctx } = this;
     let tempArticle = ctx.request.body
@@ -63,6 +64,23 @@ class AdminController extends Controller {
         success: false,
         message: '插入失败'
       }
+    }
+  }
+
+  // 获取全部文章
+  async getArticleList() {
+    const { ctx } = this;
+    const sql = `SELECT article.id as id,
+      article.title as title,
+      article.introduction as introduction,
+      FROM_UNIXTIME(article.created_time,'%Y-%m-%d %H:%i:%s') as created_time,
+      article.view_count as view_count,
+      type.typeName as typeName FROM article LEFT JOIN type ON article.type_id = type.id 
+      ORDER BY article.id DESC`
+
+    const result = await this.app.mysql.query(sql)
+    ctx.body = {
+      data: result
     }
   }
 }
