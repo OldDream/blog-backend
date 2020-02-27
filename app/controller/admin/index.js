@@ -6,7 +6,7 @@ class AdminController extends Controller {
 
   async checkLogin() {
     const { ctx } = this;
-    console.log(ctx.request.body)
+    // console.log(ctx)
     let userName = ctx.request.body.userName, password = ctx.request.body.password;
     const sql = `SELECT userName FROM admin_user WHERE userName = '${userName}' AND password = '${password}' `
     const result = await this.app.mysql.query(sql)

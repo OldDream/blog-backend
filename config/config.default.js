@@ -51,7 +51,7 @@ module.exports = appInfo => {
     csrf: {
       enable: false
     },
-    domainWhiteList: ['*']
+    domainWhiteList: ['*']   // access-allow-orogin 白名单在此
   };
 
   config.cors = {
