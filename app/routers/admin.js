@@ -6,4 +6,5 @@ module.exports = app => {
   router.get('/admin/getTypeInfo', checkAuth, controller.admin.index.getTypeInfo)
   router.get('/admin/getArticleList', checkAuth, controller.admin.index.getArticleList)
   router.delete('/admin/deleteArticle/:id', checkAuth, controller.admin.index.deleteArticle)
+  router.get('/admin/getArticleById/:id', checkAuth, controller.admin.index.getArticleById)
 }

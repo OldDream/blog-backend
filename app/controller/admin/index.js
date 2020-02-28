@@ -76,6 +76,24 @@ class AdminController extends Controller {
     ctx.body = { success, data: result }
   }
 
+  // 根据id获取文章
+  async getArticleById() {
+    const { ctx } = this;
+    const id = ctx.params.id
+    const sql = `SELECT article.id as id,
+    article.title as title,
+    article.type_id as type_id,
+    article.content as content,
+    article.introduction as introduction,
+    article.created_time as created_time FROM article  WHERE article.id=${id}`
+
+    const result = await this.app.mysql.query(sql)
+    ctx.body = {
+      success: result.length === 1,
+      data: result[0]
+    }
+  }
+
   // 获取全部文章
   async getArticleList() {
     const { ctx } = this;
