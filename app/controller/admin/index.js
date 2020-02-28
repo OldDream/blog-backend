@@ -67,6 +67,15 @@ class AdminController extends Controller {
     }
   }
 
+  // 删除文章
+  async deleteArticle() {
+    const { ctx } = this;
+    const id = ctx.params.id
+    const result = await this.app.mysql.delete('article', { id })
+    const success = result.affectedRows === 1
+    ctx.body = { success, data: result }
+  }
+
   // 获取全部文章
   async getArticleList() {
     const { ctx } = this;
