@@ -50,6 +50,12 @@ class ClientController extends Controller {
     type.typeName as typeName FROM article LEFT JOIN type ON article.type_id = type.id WHERE article.id=${id}`
 
     const result = await this.app.mysql.query(sql)
+    const tempArticle = {
+      id: result[0].id,
+      view_count: Number(result[0].view_count) + 1
+    }
+    this.app.mysql.update('article', tempArticle) // 已读人数 +1
+
     ctx.body = {
       data: result[0]
     }
