@@ -72,7 +72,7 @@ class AdminController extends Controller {
     const { ctx } = this;
     const id = ctx.params.id
     const result = await this.app.mysql.delete('article', { id })
-    const success = result.affectedRows === 1
+    const success = result.affectedRows === 1 // MySQL 返回匹配的行数
     ctx.body = { success, data: result }
   }
 
